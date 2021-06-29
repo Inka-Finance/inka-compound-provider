@@ -18,7 +18,7 @@ contract InkaCompoundProvider is Ownable {
     address public WETH;
 
     constructor (address _weth) public {
-        require(_weth != address(0), "InkaUniswapProvider: ZERO_WETH_ADDRESS");
+        require(_weth != address(0), "InkaCompoundProvider: ZERO_WETH_ADDRESS");
         WETH = _weth;
     }
 
@@ -30,7 +30,7 @@ contract InkaCompoundProvider is Ownable {
         payable
         returns (bool)
     {
-        require(_cEtherContract != address(0), "InkaUniswapProvider: ZERO_CETH_ADDRESS");
+        require(_cEtherContract != address(0), "InkaCompoundProvider: ZERO_CETH_ADDRESS");
         require(msg.value > 0, "InkaCompoundProvider: TOKENS_SUPPLY_MORE_ZERO");
         ICETH cToken = ICETH(_cEtherContract);
         require(cToken.isCToken(), "InkaCompoundProvider: INVALID_CETH_ADDRESS");
@@ -57,8 +57,8 @@ contract InkaCompoundProvider is Ownable {
         address _cErc20Token,
         uint256 _numTokensToSupply
     ) internal returns (uint) {
-        require(_erc20Token != address(0), "InkaUniswapProvider: ZERO_ERC20_ADDRESS");
-        require(_cErc20Token != address(0), "InkaUniswapProvider: ZERO_CERC20_ADDRESS");
+        require(_erc20Token != address(0), "InkaCompoundProvider: ZERO_ERC20_ADDRESS");
+        require(_cErc20Token != address(0), "InkaCompoundProvider: ZERO_CERC20_ADDRESS");
         require(_numTokensToSupply > 0, "InkaCompoundProvider: TOKENS_SUPPLY_MORE_ZERO");
         IERC20 underlying = IERC20(_erc20Token);
         ICERC20 cToken = ICERC20(_cErc20Token);
