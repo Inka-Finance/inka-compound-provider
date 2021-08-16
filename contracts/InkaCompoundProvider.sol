@@ -66,7 +66,11 @@ contract InkaCompoundProvider is Ownable {
         require(underlying.allowance(msg.sender, address(this)) >= _numTokensToSupply, "InkaCompoundProvider: TOKENS_SUPPLY_NOT_ALLOWANCE");
         uint feeAmount = _numTokensToSupply.mul(providerFee).div(FEE_DENOMINATOR);
         TransferHelper.safeTransferFrom(_erc20Token, msg.sender, address(this), _numTokensToSupply);
-        underlying.approve(_cErc20Token, _numTokensToSupply);
+
+        if(underlying.allowance(address(this), _cErc20Token) < _numTokensToSupply) {
+            TransferHelper.safeApprove(_erc20Token, _cErc20Token, 115792089237316195423570985008687907853269984665640564039457584007913129639935);
+        }
+
         uint balanceBefore = cToken.balanceOf(address(this));
         uint mintResult = cToken.mint(_numTokensToSupply.sub(feeAmount));
         uint balanceAfter = cToken.balanceOf(address(this));
